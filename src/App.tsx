@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import './App.css'
 import Nav from './components/Nav'
@@ -10,7 +9,6 @@ import Favorites from './pages/Favorites'
 import Acknowledgements from './pages/Acknowledgements'
 
 function App() {
-  
 
   return (
     <>
@@ -18,12 +16,12 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/potd' element={<Potd />} />
-        <Route path="/search" element={<Search />}/>
-        <Route path='/favorites' element={<Favorites/>}/>
+        <Route path="/search" element={<Search />} />
+        <Route path='/favorites' element={<Favorites />} />
         <Route path='/acknowledgements' element={<Acknowledgements />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
-    </>    
+    </>
   )
 }
 
