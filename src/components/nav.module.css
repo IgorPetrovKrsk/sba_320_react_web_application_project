@@ -7,3 +7,7 @@
 .img{
     width: 60px;
 }
+.active {
+  font-weight: bold;
+  color: #ff5733; /* Highlight color */
+}
