@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
+import styles from './nav.module.css'
 
 export default function Nav() {
     return (
-        <div>
-            <Link to="/"><div>HOME</div></Link>
-            <Link to="/search"><div>SEARCH</div></Link>            
+        <div className={styles.divNavigation}>
+            <Link to="/">Home</Link>
+            <Link to="/potd">Picture of the Day</Link>
+            <Link to="/search">Search</Link>            
+            <Link to="/favorites">Favorites</Link>            
+            <Link to="/acknowledgements">Acknowledgements</Link>      
+            
         </div>
     );
 }

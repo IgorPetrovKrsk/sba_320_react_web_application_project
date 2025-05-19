@@ -4,6 +4,10 @@ import './App.css'
 import Nav from './components/Nav'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
+import Potd from './pages/Potd'
+import Search from './pages/Search'
+import Favorites from './pages/Favorites'
+import Acknowledgements from './pages/Acknowledgements'
 
 function App() {
   
@@ -13,8 +17,10 @@ function App() {
       <Nav />
       <Routes>
         <Route path='/' element={<Home />} />
-        {/* <Route path='/search' element={</>} /> */}
-        {/* <Route path="/pictureOfTheDay" element={<></>}/> */}
+        <Route path='/potd' element={<Potd />} />
+        <Route path="/search" element={<Search />}/>
+        <Route path='/favorites' element={<Favorites/>}/>
+        <Route path='/acknowledgements' element={<Acknowledgements />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </>    
