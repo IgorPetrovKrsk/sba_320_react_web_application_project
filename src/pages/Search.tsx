@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ImgWithFav from "../components/ImgWithFav";
 
 export default function Search() {
 
@@ -9,6 +10,12 @@ export default function Search() {
         <option key={key} value={value}>{value}</option>
       )
     });
+  }
+
+  function roverPhotos(){
+    return photos?.map(it => 
+      <ImgWithFav src={it.img_src} alt={it.earth_date} key={it.id}/>
+    )    
   }
 
   function onChange(ev) {
@@ -31,6 +38,7 @@ export default function Search() {
   const apiKey = import.meta.env.VITE_NASA_API_KEY ?? 'DEMO_KEY'; //api key or DEMO_KEY is no API key found in envirenment
 
   const rovers = {
+    perseverance: 'Perseverance',
     curiosity: 'Curiosity',
     spirit: 'Spirit',
     opportunity: 'Opportunity'
@@ -69,14 +77,23 @@ export default function Search() {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await axios.get(`https://api.nasa.gov/mars-photos/api/v1/rovers/${formData.rover}/photos`, {
+        const requestParams = {
           params: {
             page: formData.current_page,
             earth_date: formData.earth_date,
-            camera: formData.camera,
             api_key: apiKey
           }
-        })
+        }
+        // if (formData.camera != 'All') {
+        //   if (formData.rover == 'Curiosity') {
+        //     requestParams.params.camera = Object.keys(curiosityCameras).find((key) => curiosityCameras[key] === formData.camera);
+        //     console.log(requestParams);
+        //   } else {
+        //     requestParams.params.camera = Object.keys(spiritOpportunityCameras).find((key) => spiritOpportunityCameras[key] === formData.camera);
+        //     console.log(requestParams);
+        //   }
+        // }
+        const response = await axios.get(`https://api.nasa.gov/mars-photos/api/v1/rovers/${formData.rover}/photos`, requestParams)
         if (response.status == 200) {
           setPhotos(response.data.photos);
         }
@@ -100,11 +117,12 @@ export default function Search() {
         </select>
       </label>
       <br />
-      <label>Camera:&nbsp;
+      {/* Camera abbriviations are all other the place so NO camera selection */}
+      {/* <label>Camera:&nbsp;
         <select name='camera' onChange={onChange} value={formData.camera}>
           {formData.rover == rovers.curiosity ? genOptions(curiosityCameras) : genOptions(spiritOpportunityCameras)}
         </select>
-      </label>
+      </label> */}
       <br />
       <label>Earth date:&nbsp;
         <input type="date" name='earth_date' onChange={onChange} value={formData.earth_date} max={today} />
@@ -117,12 +135,15 @@ export default function Search() {
     <br />
     {loading ? <img src="src\assets\NASA Alien searching.png" alt="Picture of aliens trying to fix Mars Rover (404 not found)" style={{ width: '90%' }} /> :
       <>
-      {(!photos?.length && photos!=null)? <img src="src\assets\NASA Aliens not found.png" alt="Picture of mars rover trying to find aliens just as aliens are standing behind the rover" style={{ width: '90%' }} />: <></>}
+        {(!photos?.length && photos != null) ? <img src="src\assets\NASA Aliens not found.png" alt="Picture of mars rover trying to find aliens just as aliens are standing behind the rover" style={{ width: '90%' }} /> : 
+        
+        roverPhotos()
+        }
       </>
-      
+
     }
     {/* only showing navigation buttons if if there are pictures */}
-    {photos?.length>0 && <><button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page - 1 })) }} disabled={formData.current_page == 1}>←</button>
+    {photos?.length > 0 && <><button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page - 1 })) }} disabled={formData.current_page == 1}>←</button>
       {/* ideally should restict max pages */}
       <input type="number" name='current_page' onChange={onChange} value={formData.current_page} min={1} />
       <button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page + 1 })) }}>→</button></>}
