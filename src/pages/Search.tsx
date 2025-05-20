@@ -1,12 +1,8 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export default function Search() {
 
-  const rovers = {
-    curiosity: 'Curiosity',
-    spirit: 'Spirit',
-    opportunity: 'Opportunity'
-  }
   function genOptions(obj: Object) {
     return Object.entries(obj).map(([key, value]) => {
       return (
@@ -15,7 +11,33 @@ export default function Search() {
     });
   }
 
+  function onChange(ev) {
+    let updatedData = { ...formData, [ev.target.name]: ev.target.value };
+    if (ev.target.name == 'rover') {
+      updatedData.camera = 'all'
+    }
+    if (ev.target.name == 'rover' || ev.target.name == 'camera') {
+      updatedData.current_page = 1 //going back to the first page
+    }
+    setFormData(updatedData)
+  }
+
+  function onSubmit(ev) {
+    ev.preventDefault();
+    setLoading(true);
+  }
+
+  const today = new Date().toISOString().split("T")[0];
+  const apiKey = import.meta.env.VITE_NASA_API_KEY ?? 'DEMO_KEY'; //api key or DEMO_KEY is no API key found in envirenment
+
+  const rovers = {
+    curiosity: 'Curiosity',
+    spirit: 'Spirit',
+    opportunity: 'Opportunity'
+  }
+
   const curiosityCameras = {
+    ALL: 'All',
     FHAZ: 'Front Hazard Avoidance Camera',
     RHAZ: 'Rear Hazard Avoidance Camera',
     MAST: 'Mast Camera',
@@ -26,6 +48,7 @@ export default function Search() {
   }
 
   const spiritOpportunityCameras = {
+    ALL: 'All',
     FHAZ: 'Front Hazard Avoidance Camera',
     RHAZ: 'Rear Hazard Avoidance Camera',
     NAVCAM: 'Navigation Camera',
@@ -35,36 +58,74 @@ export default function Search() {
 
   const [formData, setFormData] = useState({
     rover: rovers.curiosity,
-    camera: curiosityCameras.FHAZ,
-    currentPage: 1,
-    earth_date: new Date().toISOString().split('T')[0]
+    camera: curiosityCameras.ALL,
+    current_page: 1,
+    earth_date: today
   });
+  const [loading, setLoading] = useState(false)
 
-  function onChange(ev) {
-    let updatedData = { ...formData, [ev.target.name]: ev.target.value };
-    if (ev.target.name =='rover'){
-      updatedData.camera = 'Front Hazard Avoidance Camera' //because every rover has 'Front Hazard Avoidance Camera'
+  const [photos, setPhotos] = useState(null)
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axios.get(`https://api.nasa.gov/mars-photos/api/v1/rovers/${formData.rover}/photos`, {
+          params: {
+            page: formData.current_page,
+            earth_date: formData.earth_date,
+            camera: formData.camera,
+            api_key: apiKey
+          }
+        })
+        if (response.status == 200) {
+          setPhotos(response.data.photos);
+        }
+      }
+      catch (err) {
+        console.error(err);
+      }
     }
-    setFormData(updatedData)
-  }
+    if (loading) getData();
+    setLoading(false);
+    return () => { };
+  }, [loading])
 
 
   return (<>
     <h3>Rover photos search</h3>
-    <form>
-      <label>Rover:&nbsp; 
+    <form onSubmit={onSubmit}>
+      <label>Rover:&nbsp;
         <select name='rover' onChange={onChange} value={formData.rover}>
           {genOptions(rovers)}
         </select>
       </label>
-      <label>Camera:&nbsp; 
+      <br />
+      <label>Camera:&nbsp;
         <select name='camera' onChange={onChange} value={formData.camera}>
-          {formData.rover==rovers.curiosity? genOptions(curiosityCameras):genOptions(spiritOpportunityCameras)}
+          {formData.rover == rovers.curiosity ? genOptions(curiosityCameras) : genOptions(spiritOpportunityCameras)}
         </select>
       </label>
-
+      <br />
+      <label>Earth date:&nbsp;
+        <input type="date" name='earth_date' onChange={onChange} value={formData.earth_date} max={today} />
+      </label>
+      <br />
+      <br />
+      <input type="submit" value="Search" />
 
     </form>
-    {/* <img src="src\assets\NASA Under Construction 404.png" alt="Picture of aliens trying to fix Mars Rover (404 not found)" style={{ width: '90%' }} />; */}
+    <br />
+    {loading ? <img src="src\assets\NASA Alien searching.png" alt="Picture of aliens trying to fix Mars Rover (404 not found)" style={{ width: '90%' }} /> :
+      <>
+      {(!photos?.length && photos!=null)? <img src="src\assets\NASA Aliens not found.png" alt="Picture of mars rover trying to find aliens just as aliens are standing behind the rover" style={{ width: '90%' }} />: <></>}
+      </>
+      
+    }
+    {/* only showing navigation buttons if if there are pictures */}
+    {photos?.length>0 && <><button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page - 1 })) }} disabled={formData.current_page == 1}>←</button>
+      {/* ideally should restict max pages */}
+      <input type="number" name='current_page' onChange={onChange} value={formData.current_page} min={1} />
+      <button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page + 1 })) }}>→</button></>}
+
   </>)
 }
