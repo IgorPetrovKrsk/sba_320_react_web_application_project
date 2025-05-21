@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
-import ImgWithFav from "../components/imgWithFav/ImgWithFav";
+import ImgWithFav from "../../components/imgWithFav/ImgWithFav";
+import styles from './poth.module.css'
 
 
 export default function Potd() {
@@ -36,7 +37,9 @@ export default function Potd() {
         <h3>{responceData.title}</h3>
         <p>{responceData.explanation}</p>
         {(responceData.media_type=='image')?
-          <ImgWithFav src={responceData.url} alt={responceData.title} style={{ width: '90%' }} /> :          
+          <div className={styles.potd}>
+          <ImgWithFav src={responceData.url} alt={responceData.title} style={{ width: '90%'}} />
+          </div>:
           <></>
         }        
       </>
