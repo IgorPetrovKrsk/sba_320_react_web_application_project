@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
-import ImgWithFav from "../components/ImgWithFav";
+import ImgWithFav from "../components/imgWithFav/ImgWithFav";
 
 
 export default function Potd() {

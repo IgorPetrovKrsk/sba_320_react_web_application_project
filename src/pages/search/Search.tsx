@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ImgWithFav from "../../components/ImgWithFav";
+import ImgWithFav from "../../components/imgWithFav/ImgWithFav";
 import styles from './search.module.css'
 
 export default function Search() {
@@ -111,29 +111,31 @@ export default function Search() {
 
   return (<>
     <h3>Rover photos search</h3>
-    <form onSubmit={onSubmit}>
-      <label>Rover:&nbsp;
+    <form onSubmit={onSubmit} >
+      <label>Rover:
         <select name='rover' onChange={onChange} value={formData.rover}>
           {genOptions(rovers)}
         </select>
       </label>
-      <br />
+      
       {/* Camera abbriviations are all other the place so NO camera selection */}
       {/* <label>Camera:&nbsp;
         <select name='camera' onChange={onChange} value={formData.camera}>
           {formData.rover == rovers.curiosity ? genOptions(curiosityCameras) : genOptions(spiritOpportunityCameras)}
         </select>
       </label> */}
-      <br />
-      <label>Earth date:&nbsp;
+      &nbsp;&nbsp;&nbsp;
+      <label>Earth date:
         <input type="date" name='earth_date' onChange={onChange} value={formData.earth_date} max={today} />
-      </label>
-      <br />
-      <br />
+      </label>&nbsp;&nbsp;&nbsp;
       <input type="submit" value="Search" />
 
     </form>
-    <br />
+    {photos?.length > 0 && <><button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page - 1 })); setLoading(true); }} disabled={formData.current_page == 1}>←</button>
+      {/* ideally should restict max pages */}
+      <input type="number" className={styles.current_page} name='current_page' onChange={onChange} value={formData.current_page} min={1} />
+      <button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page + 1 })); setLoading(true); }}>→</button></>}
+    <br /><br />
     {loading ? <img src="src\assets\NASA Alien searching.png" alt="Picture of aliens trying to fix Mars Rover (404 not found)" style={{ width: '90%' }} /> :
       <>
         {(!photos?.length && photos != null) ? <img src="src\assets\NASA Aliens not found.png" alt="Picture of mars rover trying to find aliens just as aliens are standing behind the rover" style={{ width: '90%' }} /> :
@@ -145,11 +147,7 @@ export default function Search() {
 
     }
     {/* only showing navigation buttons if if there are pictures */}
-    <br />
-    {photos?.length > 0 && <><button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page - 1 })); setLoading(true); }} disabled={formData.current_page == 1}>←</button>
-      {/* ideally should restict max pages */}
-      <input type="number" name='current_page' onChange={onChange} value={formData.current_page} min={1} />
-      <button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page + 1 })); setLoading(true); }}>→</button></>}
-
+    
+    
   </>)
 }
