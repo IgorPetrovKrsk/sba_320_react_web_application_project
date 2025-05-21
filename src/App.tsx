@@ -4,7 +4,7 @@ import Nav from './components/Nav'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import Potd from './pages/Potd'
-import Search from './pages/Search'
+import Search from './pages/search/Search'
 import Favorites from './pages/Favorites'
 import Acknowledgements from './pages/Acknowledgements'
 

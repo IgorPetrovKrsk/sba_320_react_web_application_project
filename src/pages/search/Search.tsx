@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ImgWithFav from "../components/ImgWithFav";
+import ImgWithFav from "../../components/ImgWithFav";
+import styles from './search.module.css'
 
 export default function Search() {
 
@@ -12,10 +13,10 @@ export default function Search() {
     });
   }
 
-  function roverPhotos(){
-    return photos?.map(it => 
-      <ImgWithFav src={it.img_src} alt={it.earth_date} key={it.id}/>
-    )    
+  function roverPhotos() {
+    return photos?.map(it =>
+      <ImgWithFav src={it.img_src} alt={it.earth_date} key={it.id} />
+    )
   }
 
   function onChange(ev) {
@@ -65,7 +66,7 @@ export default function Search() {
   }
 
   const [formData, setFormData] = useState({
-    rover: rovers.curiosity,
+    rover: rovers.perseverance,
     camera: curiosityCameras.ALL,
     current_page: 1,
     earth_date: today
@@ -135,18 +136,20 @@ export default function Search() {
     <br />
     {loading ? <img src="src\assets\NASA Alien searching.png" alt="Picture of aliens trying to fix Mars Rover (404 not found)" style={{ width: '90%' }} /> :
       <>
-        {(!photos?.length && photos != null) ? <img src="src\assets\NASA Aliens not found.png" alt="Picture of mars rover trying to find aliens just as aliens are standing behind the rover" style={{ width: '90%' }} /> : 
-        
-        roverPhotos()
+        {(!photos?.length && photos != null) ? <img src="src\assets\NASA Aliens not found.png" alt="Picture of mars rover trying to find aliens just as aliens are standing behind the rover" style={{ width: '90%' }} /> :
+          <div className={styles.roverPhotos}>
+            {roverPhotos()}
+          </div>
         }
       </>
 
     }
     {/* only showing navigation buttons if if there are pictures */}
-    {photos?.length > 0 && <><button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page - 1 })) }} disabled={formData.current_page == 1}>←</button>
+    <br />
+    {photos?.length > 0 && <><button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page - 1 })); setLoading(true); }} disabled={formData.current_page == 1}>←</button>
       {/* ideally should restict max pages */}
       <input type="number" name='current_page' onChange={onChange} value={formData.current_page} min={1} />
-      <button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page + 1 })) }}>→</button></>}
+      <button onClick={() => { setFormData(c => ({ ...c, current_page: c.current_page + 1 })); setLoading(true); }}>→</button></>}
 
   </>)
 }
