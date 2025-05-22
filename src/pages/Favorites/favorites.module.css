@@ -1,0 +1,12 @@
+.favoritePhotos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.favoritePhotos img {
+    width: calc(100% / 5 - 10px);
+    max-width: 500px;
+    height: auto;
+}

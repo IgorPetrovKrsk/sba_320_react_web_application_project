@@ -1,8 +1,24 @@
+import { useContext } from "react";
+import { FavoritesContext } from "../../App";
+import ImgWithFav from "../../components/imgWithFav/ImgWithFav";
+import styles from './favorites.module.css'
+
 export default function Favorites() {
+  const favorities = useContext(FavoritesContext);
+
+  function favoritePhotos() {
+    return favorities?.map(it =>
+      <ImgWithFav src={it} alt={it} key={it} />
+    )
+  }
+
   return (
     <>
-      <h1>This is Favorites</h1>
-      <img src="src\assets\NASA Under Construction 404.png" alt="Picture of aliens trying to fix Mars Rover (404 not found)" style={{ width: '90%' }} />
+      <h3>Favorites</h3>
+      <div className={styles.favoritePhotos}>
+        {favoritePhotos()}
+      </div>
+
     </>
 
   )
