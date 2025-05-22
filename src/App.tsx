@@ -13,6 +13,7 @@ import type { Action } from './reducers/favoritesReducer';
 import FavoritesDispatchProvider from './contextProviders/FavoritesDispatchProvider'
 
 export const FavoritesDispatchContext = createContext<React.Dispatch<Action> | null>(null);
+export const FavoritesContext = createContext<string[]>([]);
 
 function App() {
 
@@ -23,7 +24,7 @@ function App() {
 
   return (
     <>
-      <FavoritesDispatchProvider dispatchFavorites={dispatchFavorites}>
+      <FavoritesDispatchProvider dispatchFavorites={dispatchFavorites} favorites={favorites}>
         <Nav />
         <Routes>
           <Route path='/' element={<Home />} />

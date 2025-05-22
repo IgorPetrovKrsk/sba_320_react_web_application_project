@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styles from './imgWithFav.module.css'
+import { FavoritesDispatchContext } from '../../App';
 
 interface ImgWithFavProps {
   src: string;
@@ -9,7 +10,8 @@ interface ImgWithFavProps {
 
 export default function ImgWithFav({ src, alt, style }: ImgWithFavProps) {
   const [expanded, setExpanded] = useState(false);
-
+  const favoritesDispatcher = useContext(FavoritesDispatchContext);
+  
   function toggleFav(){
     
   }
