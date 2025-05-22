@@ -1,20 +1,19 @@
 
 export type Action =
-    | { type: 'ADD'; payload: string }
-    | { type: 'DELETE'; payload: string }
+    | { type: 'TOGGLE'; payload: string }
     | { type: 'GET'; }
     | { type: 'CLEAR'; };
 
 
 export default function favoritesReducer(state: string[], action: Action): string[] {
     switch (action.type) {
-        case 'ADD':
-            state.push(action.payload);
-            localStorage.setItem('favorites', JSON.stringify(state));
-            return state;
-            break;
-        case 'DELETE':
-            state = state.filter(it => it !== action.payload); //one liner NO {}
+        case 'TOGGLE':
+            const element = state.find(it=> it===action.payload);
+            if (element) {
+                state = state.filter(it => it !== action.payload); //one liner NO {}
+            } else {
+                state = [...state,action.payload];
+            }
             localStorage.setItem('favorites', JSON.stringify(state));
             return state;
             break;

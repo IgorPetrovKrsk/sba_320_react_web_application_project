@@ -36,6 +36,10 @@
   transition: all ease 0.2s;
 }
 
+.favoriteButtonSelected {
+  color: darkred;
+}
+
 .favoriteButton:hover {
   color: red;  
 }
