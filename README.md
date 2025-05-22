@@ -1,7 +1,22 @@
-React application that fetches photos from mars rovers and NASA's picture of the Day using NASA API<br/>
-Uses useState to specify search paramets. UseEffect to load and reload picture of the day on every rerender.<br/>
-Uses useReducer to store and manage favorite photos. UseContext to supply image with favorite button component with favorites and favorites dispatcher.<br/>
-Uses useLocation for highliting current page in navigation bar.<br/>
+## 🚀 React NASA Photo Viewer
+
+A React application that fetches photos from Mars Rovers and NASA's Picture of the Day using the NASA API.
+
+### 🧠 Features
+
+- 📸 **Data Fetching**
+  - Fetches photos from Mars rovers and the NASA Picture of the Day.
+  - Utilizes the NASA API.
+
+- ⚙️ **State Management**
+  - `useState` – for specifying search parameters.
+  - `useEffect` – to load and reload the Picture of the Day on every re-render.
+  - `useReducer` – to store and manage favorite photos.
+  - `localStorage` – for persisting favorite image URLs.
+  - `useContext` – to provide components with access to favorites and the favorites dispatcher.
+
+- 🧭 **Navigation**
+  - `useLocation` – highlights the current page in the navigation bar.
 
 Home page
 
