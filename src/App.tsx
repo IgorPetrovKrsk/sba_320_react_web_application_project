@@ -7,8 +7,15 @@ import Potd from './pages/potd/Potd'
 import Search from './pages/search/Search'
 import Favorites from './pages/Favorites'
 import Acknowledgements from './pages/Acknowledgements'
+import { useReducer } from 'react'
+import favoritesReducer from './reducers/favoritesReducer'
 
 function App() {
+
+const storedFavorites = localStorage.getItem('favorites');
+const parsedFavorites = storedFavorites ? JSON.parse(storedFavorites) : [];
+
+const [favorites, dispatchFavorites] = useReducer(favoritesReducer, parsedFavorites);
 
   return (
     <>
