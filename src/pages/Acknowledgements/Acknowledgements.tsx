@@ -8,7 +8,11 @@ export default function Acknowledgements() {
        <br />
        <Link to='https://api.nasa.gov/'>NASA API</Link>
       <br />
-      <Link to='https://en.wikipedia.org/wiki/Mars_rover'>And to all the MARS Rovers</Link>
+      <Link to='https://en.wikipedia.org/wiki/Mars_rover'>All the MARS Rovers</Link>
+      <br />
+      <br />
+      <h3>And all this guys for their hard work.</h3>
+      <img src="src\assets\NASA Under Construction 404.png" alt="Picture of aliens caonstructiong a home" style={{ width: '90%' }} />
       </>
   )
 
